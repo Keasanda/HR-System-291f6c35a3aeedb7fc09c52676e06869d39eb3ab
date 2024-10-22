@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241016074222_newChanges")]
+    partial class newChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bdc2c940-d773-45b2-9b5c-e6ed7163e2ee",
+                            Id = "192f2156-4365-490e-b831-c812c8318efb",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b4c7e7c6-c3a5-42f8-86da-531c443b1b70",
+                            Id = "fb617dea-f8f8-4219-ab96-616ae4470b9e",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -250,6 +253,10 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("BankName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -258,6 +265,8 @@ namespace api.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("BankingDetailId");
+
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("BankingDetails");
                 });
@@ -273,9 +282,6 @@ namespace api.Migrations
                     b.Property<string>("AppUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("BankingDetailId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ContractType")
                         .IsRequired()
@@ -344,10 +350,6 @@ namespace api.Migrations
                     b.HasKey("EmployeeId");
 
                     b.HasIndex("AppUserId");
-
-                    b.HasIndex("BankingDetailId")
-                        .IsUnique()
-                        .HasFilter("[BankingDetailId] IS NOT NULL");
 
                     b.ToTable("Employees");
                 });
@@ -588,6 +590,17 @@ namespace api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("api.Models.BankingDetail", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("api.Models.Employee", b =>
                 {
                     b.HasOne("api.Models.AppUser", "AppUser")
@@ -596,13 +609,7 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("api.Models.BankingDetail", "BankingDetail")
-                        .WithOne("Employee")
-                        .HasForeignKey("api.Models.Employee", "BankingDetailId");
-
                     b.Navigation("AppUser");
-
-                    b.Navigation("BankingDetail");
                 });
 
             modelBuilder.Entity("api.Models.JobGrade", b =>
@@ -644,12 +651,6 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
                     b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("api.Models.BankingDetail", b =>
-                {
-                    b.Navigation("Employee")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("api.Models.JobGrade", b =>

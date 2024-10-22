@@ -36,7 +36,7 @@ function App() {
         <Route path="/add-employee" element={<AddEmployee />} />
         <Route path="/email" element={<Email/>} />
         <Route path="/employee/:id" element={<EmployeeDetails />} />  {/* Dynamic route for employee details */}
-        <Route path="/banking-detail" element={<BankingDetail />} />
+        <Route path="/bank-details/:id" element={<BankingDetail />} />
         
       </Routes>
     </Router>

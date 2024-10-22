@@ -288,3 +288,4 @@ C:\Users\SMabaso\Desktop\HR-System-291f6c35a3aeedb7fc09c52676e06869d39eb3ab\api\
 C:\Users\SMabaso\Desktop\HR-System-291f6c35a3aeedb7fc09c52676e06869d39eb3ab\api\obj\Debug\net8.0\api.pdb
 C:\Users\SMabaso\Desktop\HR-System-291f6c35a3aeedb7fc09c52676e06869d39eb3ab\api\obj\Debug\net8.0\api.genruntimeconfig.cache
 C:\Users\SMabaso\Desktop\HR-System-291f6c35a3aeedb7fc09c52676e06869d39eb3ab\api\obj\Debug\net8.0\ref\api.dll
+C:\Users\SMabaso\Desktop\HR-System-291f6c35a3aeedb7fc09c52676e06869d39eb3ab\api\obj\Debug\net8.0\api.sourcelink.json

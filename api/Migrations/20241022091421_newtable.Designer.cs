@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241014130453_newChanges")]
-    partial class newChanges
+    [Migration("20241022091421_newtable")]
+    partial class newtable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "aeaf2089-3c11-40e4-a1d1-dabd6a72f8a3",
+                            Id = "bdc2c940-d773-45b2-9b5c-e6ed7163e2ee",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d9ff64a1-ecbf-438a-8cef-e4283399efb2",
+                            Id = "b4c7e7c6-c3a5-42f8-86da-531c443b1b70",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -253,10 +253,6 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("BankName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -265,8 +261,6 @@ namespace api.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("BankingDetailId");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("BankingDetails");
                 });
@@ -282,6 +276,9 @@ namespace api.Migrations
                     b.Property<string>("AppUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("BankingDetailId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ContractType")
                         .IsRequired()
@@ -350,6 +347,10 @@ namespace api.Migrations
                     b.HasKey("EmployeeId");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("BankingDetailId")
+                        .IsUnique()
+                        .HasFilter("[BankingDetailId] IS NOT NULL");
 
                     b.ToTable("Employees");
                 });
@@ -590,17 +591,6 @@ namespace api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("api.Models.BankingDetail", b =>
-                {
-                    b.HasOne("api.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("api.Models.Employee", b =>
                 {
                     b.HasOne("api.Models.AppUser", "AppUser")
@@ -609,7 +599,13 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("api.Models.BankingDetail", "BankingDetail")
+                        .WithOne("Employee")
+                        .HasForeignKey("api.Models.Employee", "BankingDetailId");
+
                     b.Navigation("AppUser");
+
+                    b.Navigation("BankingDetail");
                 });
 
             modelBuilder.Entity("api.Models.JobGrade", b =>
@@ -651,6 +647,12 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("api.Models.BankingDetail", b =>
+                {
+                    b.Navigation("Employee")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("api.Models.JobGrade", b =>

@@ -25,5 +25,11 @@ namespace api.Dtos.Employee
         public DateTime EndDate { get; set; }
         public string Url { get; set; } // Image URL
         public string PasswordHash { get; set; }
+
+
+    // Add BankingDetailDto to include banking information
+    public BankingDetailDto BankingDetail { get; set; }
+
+
     }
 }

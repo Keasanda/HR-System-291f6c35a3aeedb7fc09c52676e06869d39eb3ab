@@ -27,9 +27,14 @@ public class Employee
     public string Url { get; set; }
     public string PasswordHash { get; set; }
 
- public string AppUserId { get; set; }
-        public AppUser AppUser { get; set; }
+    public string AppUserId { get; set; }
+    public AppUser AppUser { get; set; }
+
+    // Add Foreign Key for BankingDetail
+    public int? BankingDetailId { get; set; }
+    public BankingDetail BankingDetail { get; set; }  // Navigation Property
 }
+
 
 
 }
